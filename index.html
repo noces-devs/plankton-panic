@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Plankton Panic!</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: #0879b7;
+      color: white;
+    }
+
+    .box {
+      padding: 30px;
+      border: 5px solid white;
+      border-radius: 25px;
+      background: #07577f;
+    }
+
+    h1 {
+      font-size: 50px;
+      color: #ffe54d;
+      text-shadow: 4px 4px #222;
+    }
+
+    #timer {
+      font-size: 140px;
+      font-weight: bold;
+    }
+
+    button {
+      font-size: 25px;
+      font-weight: bold;
+      padding: 15px 35px;
+      border: none;
+      border-radius: 15px;
+      background: #ffe54d;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>PLANKTON PANIC!</h1>
+  <p>🦠 30-SECOND BONK CHALLENGE 🔨</p>
+
+  <div id="timer">30</div>
+
+  <button onclick="startTimer()">START!</button>
+
+  <p id="message">Get ready to bonk!</p>
+</div>
+
+<script>
+function startTimer() {
+  let time = 30;
+  document.getElementById("timer").innerHTML = time;
+  document.getElementById("message").innerHTML = "GO! BONK THAT PLANKTON!";
+
+  let countdown = setInterval(function() {
+    time--;
+    document.getElementById("timer").innerHTML = time;
+
+    if (time <= 0) {
+      clearInterval(countdown);
+      document.getElementById("message").innerHTML = "TIME'S UP! 🦠";
+    }
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
