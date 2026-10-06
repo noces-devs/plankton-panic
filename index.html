@@ -1,803 +1,391 @@
 ```html
 <!DOCTYPE html>
 <html>
-
 <head>
-
   <title>Plankton Panic!</title>
 
   <style>
-
     body {
       margin: 0;
       min-height: 100vh;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
-      text-align: center;
-
       font-family: Arial, sans-serif;
-
       background: #0879b7;
-
       color: white;
-
       overflow-x: hidden;
     }
 
-
-    /* MAIN BOX */
-
     .box {
-
       width: 90%;
       max-width: 1100px;
-
       padding: 30px;
-
       border: 5px solid white;
       border-radius: 25px;
-
       background: #07577f;
-
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-
     }
-
-
-    /* TITLE */
 
     h1 {
-
       font-size: 50px;
-
       margin-top: 0;
-
       color: #ffe54d;
-
       text-shadow: 4px 4px #222;
-
     }
-
 
     .subtitle {
-
       font-size: 20px;
-
       font-weight: bold;
-
     }
-
-
-    /* GAME AREA */
 
     .game-area {
-
       display: flex;
-
       justify-content: space-around;
-
       align-items: center;
-
       gap: 40px;
-
       flex-wrap: wrap;
-
       margin-top: 25px;
-
     }
 
-
-    /* =========================
-       TIMER
-    ========================= */
+    /* TIMER */
 
     .timer-area {
-
       min-width: 300px;
-
     }
-
 
     #timer {
-
       font-size: 120px;
-
       font-weight: bold;
-
       color: #ffe54d;
-
       text-shadow: 5px 5px #222;
-
       margin: 20px 0;
-
     }
-
 
     button {
-
       font-size: 20px;
-
       font-weight: bold;
-
       padding: 12px 25px;
-
       margin: 5px;
-
       border: none;
-
       border-radius: 15px;
-
       background: #ffe54d;
-
       color: #222;
-
       cursor: pointer;
-
       transition: 0.2s;
-
     }
-
 
     button:hover {
-
       transform: scale(1.08);
-
       background: #fff27d;
-
     }
-
 
     #message {
-
       font-size: 18px;
-
       font-weight: bold;
-
     }
 
-
-    /* =========================
-       BONUS WHEEL
-    ========================= */
+    /* WHEEL */
 
     .wheel-area {
-
       min-width: 320px;
-
     }
-
 
     .wheel-container {
-
       position: relative;
-
       width: 300px;
-
       height: 300px;
-
       margin: auto;
-
     }
-
 
     #wheel {
-
       width: 300px;
-
       height: 300px;
-
       border-radius: 50%;
-
       border: 8px solid white;
-
       position: relative;
-
       overflow: hidden;
 
-
-      /*
-        6 equal sections
-
-        Yellow = 2x Points
-        Green = +1 Point
-      */
-
       background: conic-gradient(
-
         #ffe54d 0deg 60deg,
-
-        #62c370 60deg 120deg,
-
-        #ffe54d 120deg 180deg,
-
-        #62c370 180deg 240deg,
-
-        #ffe54d 240deg 300deg,
-
-        #62c370 300deg 360deg
-
+        #f28c28 60deg 120deg,
+        #62c370 120deg 180deg,
+        #ef5350 180deg 240deg,
+        #9b59b6 240deg 300deg,
+        #3498db 300deg 360deg
       );
 
-
-      transition:
-
-        transform 4s
-
-        cubic-bezier(0.15, 0.85, 0.25, 1);
-
+      transition: transform 4s cubic-bezier(0.15, 0.85, 0.25, 1);
     }
 
-
-    /* =========================
-       WHEEL TEXT
-    ========================= */
-
-    .slice-text {
-
+    .wheel-labels {
       position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
 
-      width: 100px;
-
-      text-align: center;
-
-      font-size: 15px;
-
+    .label {
+      position: absolute;
+      width: 90px;
+      font-size: 12px;
       font-weight: bold;
-
       color: #222;
-
-      line-height: 1.1;
-
-      z-index: 2;
-
+      text-align: center;
     }
 
-
-    .text1 {
-
+    .label1 {
       top: 30px;
-
-      left: 100px;
-
+      left: 105px;
     }
 
-
-    .text2 {
-
-      top: 80px;
-
-      right: 15px;
-
-    }
-
-
-    .text3 {
-
-      bottom: 45px;
-
+    .label2 {
+      top: 85px;
       right: 20px;
-
     }
 
+    .label3 {
+      bottom: 45px;
+      right: 25px;
+    }
 
-    .text4 {
-
+    .label4 {
       bottom: 25px;
-
-      left: 100px;
-
+      left: 105px;
     }
 
-
-    .text5 {
-
+    .label5 {
       bottom: 80px;
-
-      left: 15px;
-
+      left: 20px;
     }
 
-
-    .text6 {
-
-      top: 80px;
-
-      left: 15px;
-
+    .label6 {
+      top: 85px;
+      left: 20px;
     }
 
-
-    /* =========================
-       POINTER
-    ========================= */
+    /* POINTER */
 
     .pointer {
-
       position: absolute;
-
       top: -18px;
-
       left: 50%;
-
       transform: translateX(-50%);
-
       width: 0;
-
       height: 0;
-
-
       border-left: 18px solid transparent;
-
       border-right: 18px solid transparent;
-
       border-top: 35px solid #ff3333;
-
       z-index: 5;
-
     }
-
-
-    /* =========================
-       RESULT
-    ========================= */
 
     #result {
-
       margin-top: 20px;
-
       font-size: 22px;
-
       font-weight: bold;
-
       color: #ffe54d;
-
     }
 
-
-    /* =========================
-       MOBILE
-    ========================= */
-
     @media (max-width: 700px) {
-
       h1 {
-
         font-size: 35px;
-
       }
-
 
       #timer {
-
         font-size: 80px;
-
       }
-
 
       .wheel-container,
       #wheel {
-
         width: 250px;
-
         height: 250px;
-
       }
-
     }
-
   </style>
-
 </head>
-
 
 <body>
 
+<div class="box">
 
-  <div class="box">
+  <h1>🧽 PLANKTON PANIC! 🦠</h1>
 
+  <p class="subtitle">
+    🔨 30-SECOND BONK CHALLENGE 🔨
+  </p>
 
-    <!-- TITLE -->
+  <div class="game-area">
 
-    <h1>
+    <!-- TIMER -->
+    <div class="timer-area">
 
-      🧽 PLANKTON PANIC! 🦠
+      <h2>⏱️ TIMER</h2>
 
-    </h1>
+      <div id="timer">30</div>
 
+      <button onclick="startTimer()">START!</button>
+      <button onclick="resetTimer()">RESET</button>
 
-    <p class="subtitle">
-
-      🔨 30-SECOND BONK CHALLENGE 🔨
-
-    </p>
-
-
-
-    <div class="game-area">
-
-
-      <!-- =========================
-           TIMER
-      ========================= -->
-
-      <div class="timer-area">
-
-
-        <h2>
-
-          ⏱️ TIMER
-
-        </h2>
-
-
-        <div id="timer">
-
-          30
-
-        </div>
-
-
-        <button onclick="startTimer()">
-
-          START!
-
-        </button>
-
-
-        <button onclick="resetTimer()">
-
-          RESET
-
-        </button>
-
-
-        <p id="message">
-
-          Get ready to bonk!
-
-        </p>
-
-
-      </div>
-
-
-
-      <!-- =========================
-           BONUS WHEEL
-      ========================= -->
-
-      <div class="wheel-area">
-
-
-        <h2>
-
-          🎡 BONUS WHEEL!
-
-        </h2>
-
-
-        <div class="wheel-container">
-
-
-          <!-- POINTER -->
-
-          <div class="pointer"></div>
-
-
-          <!-- WHEEL -->
-
-          <div id="wheel">
-
-
-            <div class="slice-text text1">
-
-              ⭐<br>
-
-              2× POINTS
-
-            </div>
-
-
-            <div class="slice-text text2">
-
-              ➕<br>
-
-              +1 POINT
-
-            </div>
-
-
-            <div class="slice-text text3">
-
-              ⭐<br>
-
-              2× POINTS
-
-            </div>
-
-
-            <div class="slice-text text4">
-
-              ➕<br>
-
-              +1 POINT
-
-            </div>
-
-
-            <div class="slice-text text5">
-
-              ⭐<br>
-
-              2× POINTS
-
-            </div>
-
-
-            <div class="slice-text text6">
-
-              ➕<br>
-
-              +1 POINT
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-        <button onclick="spinWheel()">
-
-          🎡 SPIN!
-
-        </button>
-
-
-        <div id="result">
-
-          Spin for a bonus!
-
-        </div>
-
-
-      </div>
-
+      <p id="message">
+        Get ready to bonk!
+      </p>
 
     </div>
 
 
+    <!-- SPIN THE WHEEL -->
+    <div class="wheel-area">
+
+      <h2>🎡 SPIN THE WHEEL!</h2>
+
+      <div class="wheel-container">
+
+        <div class="pointer"></div>
+
+        <div id="wheel">
+
+          <div class="wheel-labels">
+
+            <div class="label label1">
+              🦠<br>BONK!
+            </div>
+
+            <div class="label label2">
+              🍔<br>KRABBY PATTY
+            </div>
+
+            <div class="label label3">
+              🐌<br>FEED GARY
+            </div>
+
+            <div class="label label4">
+              🎵<br>SING!
+            </div>
+
+            <div class="label label5">
+              🧽<br>CLEAN!
+            </div>
+
+            <div class="label label6">
+              🏃<br>RUN!
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <button onclick="spinWheel()">
+        🎡 SPIN!
+      </button>
+
+      <div id="result">
+        Spin me!
+      </div>
+
+    </div>
+
   </div>
 
+</div>
 
 
-  <script>
+<script>
 
+  /* =========================
+     TIMER
+  ========================= */
 
-    /* =========================
-       TIMER
-    ========================= */
+  let time = 30;
+  let countdown = null;
 
+  function startTimer() {
 
-    let time = 30;
+    if (countdown !== null) {
+      return;
+    }
 
-    let countdown = null;
+    document.getElementById("message").innerHTML =
+      "GO! BONK THAT PLANKTON! 🦠🔨";
 
+    countdown = setInterval(function() {
 
-    function startTimer() {
+      time--;
 
+      document.getElementById("timer").innerHTML = time;
 
-      /* Prevent multiple timers */
+      if (time <= 0) {
 
-      if (countdown !== null) {
+        clearInterval(countdown);
+        countdown = null;
 
-        return;
+        document.getElementById("message").innerHTML =
+          "TIME'S UP! 🦠💥";
 
       }
 
+    }, 1000);
+  }
 
-      document.getElementById("message").innerHTML =
 
-        "GO! BONK THAT PLANKTON! 🦠🔨";
+  function resetTimer() {
 
+    clearInterval(countdown);
+    countdown = null;
 
-      countdown = setInterval(function() {
+    time = 30;
 
+    document.getElementById("timer").innerHTML = time;
 
-        time--;
+    document.getElementById("message").innerHTML =
+      "Get ready to bonk!";
+  }
 
 
-        document.getElementById("timer").innerHTML =
+  /* =========================
+     SPIN THE WHEEL
+  ========================= */
 
-          time;
+  let rotation = 0;
 
+  const activities = [
+    "🦠 BONK PLANKTON!",
+    "🍔 MAKE A KRABBY PATTY!",
+    "🐌 FEED GARY!",
+    "🎵 SING A SONG!",
+    "🧽 CLEAN THE KRUSTY KRAB!",
+    "🏃 RUN FROM PLANKTON!"
+  ];
 
-        if (time <= 0) {
 
+  function spinWheel() {
 
-          clearInterval(countdown);
+    const wheel = document.getElementById("wheel");
 
-          countdown = null;
+    // Random number between 0 and 5
+    const randomIndex =
+      Math.floor(Math.random() * activities.length);
 
+    // Add several full rotations
+    rotation += 1440 + (randomIndex * 60);
 
-          document.getElementById("message").innerHTML =
+    wheel.style.transform =
+      "rotate(" + rotation + "deg)";
 
-            "TIME'S UP! 🦠💥";
+    // Wait for the animation to finish
+    setTimeout(function() {
 
+      document.getElementById("result").innerHTML =
+        "🎉 " + activities[randomIndex];
 
-        }
+    }, 4000);
+  }
 
-
-      }, 1000);
-
-    }
-
-
-
-    /* =========================
-       RESET TIMER
-    ========================= */
-
-
-    function resetTimer() {
-
-
-      clearInterval(countdown);
-
-      countdown = null;
-
-
-      time = 30;
-
-
-      document.getElementById("timer").innerHTML =
-
-        time;
-
-
-      document.getElementById("message").innerHTML =
-
-        "Get ready to bonk!";
-
-    }
-
-
-
-    /* =========================
-       BONUS WHEEL
-    ========================= */
-
-
-    let rotation = 0;
-
-    let spinning = false;
-
-
-    const bonuses = [
-
-
-      "⭐ 2× POINTS!",
-
-      "➕ +1 POINT!",
-
-      "⭐ 2× POINTS!",
-
-      "➕ +1 POINT!",
-
-      "⭐ 2× POINTS!",
-
-      "➕ +1 POINT!"
-
-    ];
-
-
-
-    function spinWheel() {
-
-
-      /* Prevent spinning multiple times */
-
-      if (spinning) {
-
-        return;
-
-      }
-
-
-      spinning = true;
-
-
-      const wheel =
-
-        document.getElementById("wheel");
-
-
-      /*
-
-        Randomly choose one
-
-        of the six sections.
-
-      */
-
-      const randomIndex =
-
-        Math.floor(
-
-          Math.random() *
-
-          bonuses.length
-
-        );
-
-
-
-      /*
-
-        Each section is 60 degrees.
-
-        Add 4 complete rotations
-
-        before landing.
-
-      */
-
-      const sectionAngle = 60;
-
-
-      rotation +=
-
-        1440 +
-
-        (randomIndex * sectionAngle);
-
-
-
-      wheel.style.transform =
-
-        "rotate(" +
-
-        rotation +
-
-        "deg)";
-
-
-
-      /*
-
-        Wait for the wheel animation
-
-        to finish before showing result.
-
-      */
-
-      setTimeout(function() {
-
-
-        document.getElementById("result").innerHTML =
-
-          "🎉 BONUS: " +
-
-          bonuses[randomIndex];
-
-
-        spinning = false;
-
-
-      }, 4000);
-
-    }
-
-
-  </script>
-
+</script>
 
 </body>
-
 </html>
 ```
